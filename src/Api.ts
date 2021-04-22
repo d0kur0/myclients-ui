@@ -1,19 +1,98 @@
 import axios from "axios";
+import { User } from "./store/user";
+import { Client } from "./store/clients";
 
 const API = axios.create({
   baseURL: process.env.REACT_APP_API_GATEWAY,
   responseType: "json",
 });
 
-type SignInRequest = {
+export type SignInRequest = {
   email: string;
   password: string;
 };
 
-type SignInResponse = {
+export type SignInResponse = {
+  isError: boolean;
+  errors: string[];
+  user: User;
   token: string;
 };
 
-export const SignInRequest = async (props: SignInRequest): Promise<SignInResponse> => {
-  return Promise.resolve({ token: "213" });
+export const signInRequest = async (props: SignInRequest): Promise<SignInResponse> => {
+  return await API.post("/user/signIn", props).then(response => response.data);
+};
+
+export type SignUpRequest = {
+  name: string;
+  email: string;
+  password: string;
+};
+
+export type SignUpResponse = {
+  isError: boolean;
+  errors: string[];
+  user: User;
+  token: string;
+};
+
+export const signUpRequest = async (props: SignUpRequest): Promise<SignUpResponse> => {
+  return await API.post("/user/signUp", props).then(response => response.data);
+};
+
+export const getClientsRequest = async (): Promise<Client[]> => {
+  return await API.post("/client/getAll", "", {
+    headers: { AuthToken: localStorage.token },
+  }).then(response => response.data);
+};
+
+export type CreateClientRequest = {
+  firstName: string;
+  middleName: string;
+  description: string;
+};
+
+export type CreateClientResponse = {
+  isError: boolean;
+  errors: string[];
+  client: Client;
+};
+
+export const createClientRequest = async (
+  props: CreateClientRequest
+): Promise<CreateClientResponse> => {
+  return await API.post("client/create", props, {
+    headers: { AuthToken: localStorage.token },
+  }).then(response => response.data);
+};
+
+export type DeleteClientRequest = {
+  id: number;
+};
+
+export const deleteClientRequest = async (props: DeleteClientRequest) => {
+  return await API.post("client/delete", props, {
+    headers: { AuthToken: localStorage.token },
+  });
+};
+
+export type UpdateClientRequest = {
+  id: number;
+  firstName: string;
+  middleName: string;
+  description: string;
+};
+
+export type UpdateClientResponse = {
+  isError: boolean;
+  errors: string[];
+  client: Client;
+};
+
+export const updateClientRequest = async (
+  props: UpdateClientRequest
+): Promise<UpdateClientResponse> => {
+  return await API.post("client/update", props, {
+    headers: { AuthToken: localStorage.token },
+  }).then(response => response.data);
 };
