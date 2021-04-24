@@ -36,6 +36,8 @@ const ServiceView = () => {
   const [serviceForDelete, setServiceForDelete] = useState(0);
   const classes = useBaseCrudStyles();
 
+  console.log(services);
+
   const servicesForList = useMemo(
     () =>
       searchQuery.length
@@ -44,7 +46,7 @@ const ServiceView = () => {
     [services, searchQuery]
   );
 
-  const handleDeleteService = (clientID: number) => setClientForDelete(clientID);
+  const handleDeleteService = (clientID: number) => setServiceForDelete(clientID);
   const handleDeleteServiceAgree = () => {
     dispatch("services/removeRemote", serviceForDelete);
     setServiceForDelete(0);
@@ -72,7 +74,11 @@ const ServiceView = () => {
       </Dialog>
 
       <div className={classes.addButtonContainer}>
-        <Button component={Link} to="/clients/create" variant="contained" color="primary">
+        <Button
+          component={Link}
+          to="/services/create"
+          variant="contained"
+          color="primary">
           Создать
         </Button>
       </div>

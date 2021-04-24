@@ -1,6 +1,7 @@
 import axios from "axios";
 import { User } from "./store/user";
 import { Client } from "./store/clients";
+import { Service } from "./store/services";
 
 const API = axios.create({
   baseURL: process.env.REACT_APP_API_GATEWAY,
@@ -95,4 +96,59 @@ export const updateClientRequest = async (
   return await API.post("client/update", props, {
     headers: { AuthToken: localStorage.token },
   }).then(response => response.data);
+};
+
+export const getServicesRequest = async (): Promise<Service[]> => {
+  return await API.post("service/getAll", "", {
+    headers: { AuthToken: localStorage.token },
+  }).then(response => response.data);
+};
+
+export type CreateServiceRequest = {
+  name: string;
+  price: number;
+};
+
+export type CreateServiceResponse = {
+  isError: boolean;
+  errors: string[];
+  service: Service;
+};
+
+export const createServiceRequest = async (
+  props: CreateServiceRequest
+): Promise<CreateServiceResponse> => {
+  return await API.post("service/create", props, {
+    headers: { AuthToken: localStorage.token },
+  }).then(response => response.data);
+};
+
+export type UpdateServiceRequest = {
+  id: number;
+  name: string;
+  price: number;
+};
+
+export type UpdateServiceResponse = {
+  isError: boolean;
+  errors: string[];
+  service: Service;
+};
+
+export const updateServiceRequest = async (
+  props: UpdateServiceRequest
+): Promise<UpdateServiceResponse> => {
+  return await API.post("service/create", props, {
+    headers: { AuthToken: localStorage.token },
+  }).then(response => response.data);
+};
+
+export type DeleteServiceRequest = {
+  id: number;
+};
+
+export const deleteServiceRequest = async (props: DeleteServiceRequest) => {
+  return await API.post("service/delete", props, {
+    headers: { AuthToken: localStorage.token },
+  });
 };

@@ -4,7 +4,7 @@ import { clients, ClientsEvents, ClientsState } from "./clients";
 import { common, CommonEvents, CommonState } from "./common";
 import { storeonLogger } from "storeon/devtools";
 import { globalSearch, GlobalSearchEvents, GlobalSearchState } from "./globalSearch";
-import { ServicesEvents, ServicesState } from "./services";
+import { services, ServicesEvents, ServicesState } from "./services";
 
 export type State = UserState &
   ClientsState &
@@ -22,5 +22,6 @@ export const store = createStoreon<State, Events>([
   clients,
   common,
   globalSearch,
+  services,
   process.env.NODE_ENV !== "production" && storeonLogger,
 ]);

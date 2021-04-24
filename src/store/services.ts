@@ -1,15 +1,16 @@
 import { StoreonModule } from "storeon";
 import {
-  createClientRequest,
-  CreateClientRequest,
-  deleteClientRequest,
-  getClientsRequest,
-  updateClientRequest,
-  UpdateClientRequest,
+  createServiceRequest,
+  CreateServiceRequest,
+  deleteServiceRequest,
+  getServicesRequest,
+  updateServiceRequest,
+  UpdateServiceRequest,
 } from "../Api";
 import { Events, State } from "./index";
 
 export type Service = {
+  id: number;
   name: string;
   price: number;
 };
@@ -23,32 +24,32 @@ export type ServicesEvents = {
   "services/remove": number;
   "services/removeRemote": number;
   "services/set": Service[];
-  "services/update": { id: number; client: Service };
+  "services/update": { id: number; service: Service };
   "services/fetch": void;
-  "services/createRemote": CreateClientRequest;
-  "services/updateRemote": UpdateClientRequest;
+  "services/createRemote": CreateServiceRequest;
+  "services/updateRemote": UpdateServiceRequest;
 };
 
 export const services: StoreonModule<State, Events> = store => {
-  store.on("@init", () => ({ clients: [] }));
-  store.on("services/set", (state, clients) => ({ ...state, clients }));
+  store.on("@init", () => ({ services: [] }));
+  store.on("services/set", (state, services) => ({ ...state, services }));
 
-  store.on("services/push", (state, client) => ({
+  store.on("services/push", (state, service) => ({
     ...state,
-    clients: [...state.clients, client],
+    services: [...state.services, service],
   }));
 
   store.on("services/remove", (state, id) => ({
     ...state,
-    clients: state.clients.filter(client => client.id !== id),
+    services: state.services.filter(service => service.id !== id),
   }));
 
   store.on("services/removeRemote", async (state, id) => {
     store.dispatch("common/setPending", true);
 
     try {
-      await deleteClientRequest({ id });
-      store.dispatch("clients/remove", id);
+      await deleteServiceRequest({ id });
+      store.dispatch("services/remove", id);
     } catch (e) {
       store.dispatch("common/setErrors", ["Сервер вернул ошибку"]);
     }
@@ -56,17 +57,17 @@ export const services: StoreonModule<State, Events> = store => {
     store.dispatch("common/setPending", false);
   });
 
-  store.on("clients/update", (state, { id, client }) => ({
+  store.on("services/update", (state, { id, service }) => ({
     ...state,
-    clients: state.clients.map(mClient => (mClient.id === id ? client : mClient)),
+    services: state.services.map(mService => (mService.id === id ? service : mService)),
   }));
 
-  store.on("clients/fetch", async () => {
+  store.on("services/fetch", async () => {
     store.dispatch("common/setPending", true);
 
     try {
-      const clients = await getClientsRequest();
-      store.dispatch("clients/set", clients);
+      const services = await getServicesRequest();
+      store.dispatch("services/set", services);
     } catch (e) {
       store.dispatch("common/setErrors", ["Ошибка загрузки данных с сервера"]);
     }
@@ -74,14 +75,14 @@ export const services: StoreonModule<State, Events> = store => {
     store.dispatch("common/setPending", false);
   });
 
-  store.on("clients/createRemote", async (state, clientProps) => {
+  store.on("services/createRemote", async (state, serviceProps) => {
     store.dispatch("common/setPending", true);
 
     try {
-      const response = await createClientRequest(clientProps);
+      const response = await createServiceRequest(serviceProps);
       response.isError
         ? store.dispatch("common/setErrors", response.errors)
-        : store.dispatch("clients/push", response.client);
+        : store.dispatch("services/push", response.service);
 
       response.isError || store.dispatch("common/setSuccess", true);
     } catch (e) {
@@ -91,16 +92,16 @@ export const services: StoreonModule<State, Events> = store => {
     store.dispatch("common/setPending", false);
   });
 
-  store.on("clients/updateRemote", async (state, props) => {
+  store.on("services/updateRemote", async (state, props) => {
     store.dispatch("common/setPending", true);
 
     try {
-      const response = await updateClientRequest(props);
+      const response = await updateServiceRequest(props);
       response.isError
         ? store.dispatch("common/setErrors", response.errors)
-        : store.dispatch("clients/update", {
-            id: response.client.id,
-            client: response.client,
+        : store.dispatch("services/update", {
+            id: response.service.id,
+            service: response.service,
           });
 
       response.isError || store.dispatch("common/setSuccess", true);

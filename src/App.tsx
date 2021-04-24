@@ -19,6 +19,7 @@ import ErrorsHandler from "./components/ErrorsHandler";
 import ClientView from "./pages/clients/ClientView";
 import ClientCreate from "./pages/clients/ClientCreate";
 import ClientUpdate from "./pages/clients/ClientUpdate";
+import ServiceCreate from "./pages/services/ServiceCreate";
 
 type RouteProps = {
   children: ReactChild;
@@ -42,6 +43,7 @@ const PageWrapper = ({ title, component, isNeedSearch }: PageProps) => {
     dispatch("common/setSuccess", false);
     dispatch("globalSearch/setQuery", "");
     dispatch("clients/fetch");
+    dispatch("services/fetch");
   }, [location, dispatch]);
 
   return (
@@ -143,6 +145,9 @@ function App() {
               />
             </PrivateRoute>
 
+            <PrivateRoute path="/services/create">
+              <PageWrapper title="Добавление услуги" component={<ServiceCreate />} />
+            </PrivateRoute>
             <PrivateRoute path="/services">
               <PageWrapper
                 isNeedSearch={true}
