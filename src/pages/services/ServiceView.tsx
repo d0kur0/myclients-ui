@@ -21,7 +21,7 @@ import {
 } from "@material-ui/core";
 import {
   Delete as DeleteIcon,
-  PermIdentity as PermIdentityIcon,
+  Payment as PaymentIcon,
   Edit as EditIcon,
 } from "@material-ui/icons";
 import useBaseCrudStyles from "../../styles/baseCrud";
@@ -83,7 +83,7 @@ const ServiceView = () => {
         </Button>
       </div>
       <Box borderRadius={5} className={classes.root}>
-        <List subheader={<ListSubheader>Список услуг</ListSubheader>} dense={true}>
+        <List subheader={<ListSubheader>Список услуг</ListSubheader>}>
           {servicesForList.length === 0 && (
             <ListItem>
               <ListItemText primary="Записей нет" />
@@ -96,11 +96,14 @@ const ServiceView = () => {
               <ListItem>
                 <ListItemAvatar>
                   <Avatar>
-                    <PermIdentityIcon />
+                    <PaymentIcon />
                   </Avatar>
                 </ListItemAvatar>
 
-                <ListItemText primary={service.name} secondary={service.price} />
+                <ListItemText
+                  primary={service.name}
+                  secondary={`${service.price} руб.`}
+                />
                 <ListItemSecondaryAction>
                   <IconButton
                     component={Link}

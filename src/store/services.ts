@@ -75,11 +75,11 @@ export const services: StoreonModule<State, Events> = store => {
     store.dispatch("common/setPending", false);
   });
 
-  store.on("services/createRemote", async (state, serviceProps) => {
+  store.on("services/createRemote", async (state, props) => {
     store.dispatch("common/setPending", true);
 
     try {
-      const response = await createServiceRequest(serviceProps);
+      const response = await createServiceRequest({ ...props, price: +props.price });
       response.isError
         ? store.dispatch("common/setErrors", response.errors)
         : store.dispatch("services/push", response.service);
@@ -96,7 +96,7 @@ export const services: StoreonModule<State, Events> = store => {
     store.dispatch("common/setPending", true);
 
     try {
-      const response = await updateServiceRequest(props);
+      const response = await updateServiceRequest({ ...props, price: +props.price });
       response.isError
         ? store.dispatch("common/setErrors", response.errors)
         : store.dispatch("services/update", {

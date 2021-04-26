@@ -138,7 +138,7 @@ export type UpdateServiceResponse = {
 export const updateServiceRequest = async (
   props: UpdateServiceRequest
 ): Promise<UpdateServiceResponse> => {
-  return await API.post("service/create", props, {
+  return await API.post("service/update", props, {
     headers: { AuthToken: localStorage.token },
   }).then(response => response.data);
 };

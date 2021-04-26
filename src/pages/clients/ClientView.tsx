@@ -82,7 +82,7 @@ const ClientView = () => {
         </Button>
       </div>
       <Box borderRadius={5} className={classes.root}>
-        <List subheader={<ListSubheader>Список клиентов</ListSubheader>} dense={true}>
+        <List subheader={<ListSubheader>Список клиентов</ListSubheader>}>
           {clientsForList.length === 0 && (
             <ListItem>
               <ListItemText primary="Записей нет" />

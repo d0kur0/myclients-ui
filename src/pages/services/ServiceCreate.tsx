@@ -1,12 +1,5 @@
 import React, { useEffect } from "react";
-import {
-  Box,
-  Button,
-  CircularProgress,
-  Container,
-  InputAdornment,
-  TextField,
-} from "@material-ui/core";
+import { Box, Button, CircularProgress, Container, TextField } from "@material-ui/core";
 import useBaseCrudStyles from "../../styles/baseCrud";
 import Typography from "@material-ui/core/Typography";
 import { useFormik } from "formik";
@@ -14,7 +7,6 @@ import { CreateServiceRequest } from "../../Api";
 import { useStoreon } from "storeon/react";
 import { Events, State } from "../../store";
 import { useHistory } from "react-router-dom";
-import { strict } from "assert";
 
 const ServiceCreate = () => {
   const classes = useBaseCrudStyles();

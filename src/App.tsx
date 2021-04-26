@@ -5,7 +5,6 @@ import { Events, State, store } from "./store";
 import { UserEvents, UserState } from "./store/user";
 import SignIn from "./pages/SignIn";
 import SignUp from "./pages/SignUp";
-import Records from "./pages/Records";
 import ServiceView from "./pages/services/ServiceView";
 import Header from "./components/Header";
 import { useLocation, useTitle } from "react-use";
@@ -20,6 +19,8 @@ import ClientView from "./pages/clients/ClientView";
 import ClientCreate from "./pages/clients/ClientCreate";
 import ClientUpdate from "./pages/clients/ClientUpdate";
 import ServiceCreate from "./pages/services/ServiceCreate";
+import ServiceUpdate from "./pages/services/ServiceUpdate";
+import RecordView from "./pages/records/RecordView";
 
 type RouteProps = {
   children: ReactChild;
@@ -145,6 +146,9 @@ function App() {
               />
             </PrivateRoute>
 
+            <PrivateRoute path="/services/update/:serviceID">
+              <PageWrapper title="Добавление услуги" component={<ServiceUpdate />} />
+            </PrivateRoute>
             <PrivateRoute path="/services/create">
               <PageWrapper title="Добавление услуги" component={<ServiceCreate />} />
             </PrivateRoute>
@@ -160,7 +164,7 @@ function App() {
               <PageWrapper
                 isNeedSearch={false}
                 title="Мои записи"
-                component={<Records />}
+                component={<RecordView />}
               />
             </PrivateRoute>
           </Switch>
