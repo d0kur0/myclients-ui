@@ -53,7 +53,6 @@ const Header = ({ title, isNeedSearch }: PageProps) => {
   };
 
   const handleInputSearch = (event: ChangeEvent<HTMLInputElement>) => {
-    console.log(event.currentTarget);
     dispatch("globalSearch/setQuery", event.currentTarget.value.toLowerCase() || "");
   };
 

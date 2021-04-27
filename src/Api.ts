@@ -2,11 +2,14 @@ import axios from "axios";
 import { User } from "./store/user";
 import { Client } from "./store/clients";
 import { Service } from "./store/services";
+import { Record } from "./store/records";
 
 const API = axios.create({
   baseURL: process.env.REACT_APP_API_GATEWAY,
   responseType: "json",
 });
+
+/* user sign */
 
 export type SignInRequest = {
   email: string;
@@ -40,6 +43,8 @@ export type SignUpResponse = {
 export const signUpRequest = async (props: SignUpRequest): Promise<SignUpResponse> => {
   return await API.post("/user/signUp", props).then(response => response.data);
 };
+
+/* clients */
 
 export const getClientsRequest = async (): Promise<Client[]> => {
   return await API.post("/client/getAll", "", {
@@ -98,6 +103,8 @@ export const updateClientRequest = async (
   }).then(response => response.data);
 };
 
+/* services */
+
 export const getServicesRequest = async (): Promise<Service[]> => {
   return await API.post("service/getAll", "", {
     headers: { AuthToken: localStorage.token },
@@ -151,4 +158,26 @@ export const deleteServiceRequest = async (props: DeleteServiceRequest) => {
   return await API.post("service/delete", props, {
     headers: { AuthToken: localStorage.token },
   });
+};
+
+/* records */
+
+export type GetRecordsByDateRequest = {
+  day: string;
+  month: string;
+  year: string;
+};
+
+export const getRecordsByDateRequest = async ({
+  month,
+  year,
+  day,
+}: GetRecordsByDateRequest): Promise<Record[]> => {
+  return await API.post(
+    "record/getByDate",
+    { year: +year, day: +day, month: +month },
+    {
+      headers: { AuthToken: localStorage.token },
+    }
+  ).then(response => response.data);
 };

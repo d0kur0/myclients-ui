@@ -45,6 +45,7 @@ const PageWrapper = ({ title, component, isNeedSearch }: PageProps) => {
     dispatch("globalSearch/setQuery", "");
     dispatch("clients/fetch");
     dispatch("services/fetch");
+    dispatch("records/fetch");
   }, [location, dispatch]);
 
   return (

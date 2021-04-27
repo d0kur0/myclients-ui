@@ -10,6 +10,11 @@ const useBaseCrudStyles = makeStyles(theme => ({
     display: "flex",
     justifyContent: "flex-end",
   },
+  addButtonContainerSpaceBetWeen: {
+    marginBottom: theme.spacing(2),
+    display: "flex",
+    justifyContent: "space-between",
+  },
   submitButtonWrapper: {
     margin: theme.spacing(3, 0, 2),
     display: "inline-flex",
