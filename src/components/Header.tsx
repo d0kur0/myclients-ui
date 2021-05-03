@@ -16,7 +16,6 @@ import {
   InputBase,
   Menu,
   MenuItem,
-  Badge,
   IconButton,
   Typography,
   Toolbar,
@@ -84,9 +83,7 @@ const Header = ({ title, isNeedSearch }: PageProps) => {
       onClose={handleMobileMenuClose}>
       <MenuItem component={Link} to="/">
         <IconButton aria-label="show 11 new notifications" color="inherit">
-          <Badge badgeContent={11} color="secondary">
-            <EventNoteIcon />
-          </Badge>
+          <EventNoteIcon />
         </IconButton>
         <p>Записи</p>
       </MenuItem>
@@ -153,23 +150,21 @@ const Header = ({ title, isNeedSearch }: PageProps) => {
               <IconButton
                 component={Link}
                 to="/"
-                aria-label="show 4 new mails"
+                aria-label="open records"
                 color="inherit">
-                <Badge badgeContent={4} color="secondary">
-                  <EventNoteIcon />
-                </Badge>
+                <EventNoteIcon />
               </IconButton>
               <IconButton
                 component={Link}
                 to="/clients"
-                aria-label="show 4 new mails"
+                aria-label="open clients"
                 color="inherit">
                 <GroupIcon />
               </IconButton>
               <IconButton
                 component={Link}
                 to="/services"
-                aria-label="show 4 new mails"
+                aria-label="open services"
                 color="inherit">
                 <AssignmentIcon />
               </IconButton>

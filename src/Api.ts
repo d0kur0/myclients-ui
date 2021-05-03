@@ -3,6 +3,7 @@ import { User } from "./store/user";
 import { Client } from "./store/clients";
 import { Service } from "./store/services";
 import { Record } from "./store/records";
+import { format } from "date-fns";
 
 const API = axios.create({
   baseURL: process.env.REACT_APP_API_GATEWAY,
@@ -162,22 +163,82 @@ export const deleteServiceRequest = async (props: DeleteServiceRequest) => {
 
 /* records */
 
-export type GetRecordsByDateRequest = {
-  day: string;
-  month: string;
-  year: string;
-};
+export type GetRecordsCountOfMonthRequest = Date;
+export type GetRecordsCountOfMonthResponse = { day: number; count: number }[];
 
-export const getRecordsByDateRequest = async ({
-  month,
-  year,
-  day,
-}: GetRecordsByDateRequest): Promise<Record[]> => {
+export const getRecordsCountOFMonthRequest = async (
+  date: GetRecordsCountOfMonthRequest
+): Promise<GetRecordsCountOfMonthResponse> => {
   return await API.post(
-    "record/getByDate",
-    { year: +year, day: +day, month: +month },
+    "record/getCountOfMonth",
+    { date: format(date, "yyyy-MM-dd") },
     {
       headers: { AuthToken: localStorage.token },
     }
   ).then(response => response.data);
+};
+
+export type GetRecordsByDateRequest = Date;
+
+export const getRecordsByDateRequest = async (
+  date: GetRecordsByDateRequest
+): Promise<Record[]> => {
+  return await API.post(
+    "record/getByDate",
+    { date: format(date, "yyyy-MM-dd") },
+    {
+      headers: { AuthToken: localStorage.token },
+    }
+  ).then(response => response.data);
+};
+
+export type CreateRecordRequest = {
+  serviceIds: number[];
+  clientId: number;
+  date: string;
+};
+
+export type CreateRecordResponse = {
+  isError: boolean;
+  errors: string[];
+  record: Record;
+};
+
+export const createRecordRequest = async (
+  props: CreateRecordRequest
+): Promise<CreateRecordResponse> => {
+  return API.post("record/create", props, {
+    headers: { AuthToken: localStorage.token },
+  }).then(response => response.data);
+};
+
+export type DeleteRecordRequest = {
+  id: number;
+};
+
+export const deleteRecordRequest = async (props: DeleteRecordRequest) => {
+  return await API.post("record/delete", props, {
+    headers: { AuthToken: localStorage.token },
+  });
+};
+
+export type UpdateRecordRequest = {
+  id: number;
+  serviceIds: number[];
+  clientId: number;
+  date: string;
+};
+
+export type UpdateRecordResponse = {
+  isError: boolean;
+  errors: string[];
+  record: Record;
+};
+
+export const updateRecordRequest = async (
+  props: UpdateRecordRequest
+): Promise<UpdateRecordResponse> => {
+  return await API.post("record/update", props, {
+    headers: { AuthToken: localStorage.token },
+  }).then(response => response.data);
 };

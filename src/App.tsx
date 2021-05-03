@@ -21,6 +21,8 @@ import ClientUpdate from "./pages/clients/ClientUpdate";
 import ServiceCreate from "./pages/services/ServiceCreate";
 import ServiceUpdate from "./pages/services/ServiceUpdate";
 import RecordView from "./pages/records/RecordView";
+import RecordCreate from "./pages/records/RecordCreate";
+import RecordUpdate from "./pages/records/RecordUpdate";
 
 type RouteProps = {
   children: ReactChild;
@@ -42,11 +44,12 @@ const PageWrapper = ({ title, component, isNeedSearch }: PageProps) => {
     dispatch("common/setPending", false);
     dispatch("common/setErrors", []);
     dispatch("common/setSuccess", false);
-    dispatch("globalSearch/setQuery", "");
-    dispatch("clients/fetch");
-    dispatch("services/fetch");
-    dispatch("records/fetch");
-  }, [location, dispatch]);
+
+    isAuth && dispatch("globalSearch/setQuery", "");
+    isAuth && dispatch("clients/fetch");
+    isAuth && dispatch("services/fetch");
+    isAuth && dispatch("records/fetch");
+  }, [location, dispatch, isAuth]);
 
   return (
     <>
@@ -161,6 +164,20 @@ function App() {
               />
             </PrivateRoute>
 
+            <PrivateRoute path="/records/update/:recordID">
+              <PageWrapper
+                isNeedSearch={false}
+                title="Обновление записи"
+                component={<RecordUpdate />}
+              />
+            </PrivateRoute>
+            <PrivateRoute path="/records/create">
+              <PageWrapper
+                isNeedSearch={false}
+                title="Создание записи"
+                component={<RecordCreate />}
+              />
+            </PrivateRoute>
             <PrivateRoute path="/">
               <PageWrapper
                 isNeedSearch={false}

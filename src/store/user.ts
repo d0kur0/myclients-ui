@@ -47,11 +47,11 @@ export const user: StoreonModule<State, Events> = store => {
         return;
       }
 
-      store.dispatch("user/setIsAuth", true);
-      store.dispatch("user/set", response.user);
-
       localStorage.token = response.token;
       localStorage.user = JSON.stringify(response.user);
+
+      store.dispatch("user/setIsAuth", true);
+      store.dispatch("user/set", response.user);
     } catch (e) {
       store.dispatch("common/setErrors", ["Ошибка сервера"]);
     }
@@ -70,11 +70,11 @@ export const user: StoreonModule<State, Events> = store => {
         return;
       }
 
-      store.dispatch("user/setIsAuth", true);
-      store.dispatch("user/set", response.user);
-
       localStorage.token = response.token;
       localStorage.user = JSON.stringify(response.user);
+
+      store.dispatch("user/setIsAuth", true);
+      store.dispatch("user/set", response.user);
     } catch (e) {
       store.dispatch("common/setErrors", ["Ошибка сервера"]);
     }
