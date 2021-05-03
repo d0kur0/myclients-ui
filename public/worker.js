@@ -26,16 +26,20 @@ self.addEventListener("fetch", event => {
 });
 
 // Update a service worker
-self.addEventListener("activate", event => {
-  let cacheWhitelist = ["cui"];
+self.addEventListener("activate", function (event) {
   event.waitUntil(
-    caches.keys().then(cacheNames => {
+    caches.keys().then(function (cacheNames) {
       return Promise.all(
-        cacheNames.map(cacheName => {
-          if (cacheWhitelist.indexOf(cacheName) === -1) {
+        cacheNames
+          .filter(function (cacheName) {
+            // Return true if you want to remove this cache,
+            // but remember that caches are shared across
+            // the whole origin
+            return true;
+          })
+          .map(function (cacheName) {
             return caches.delete(cacheName);
-          }
-        })
+          })
       );
     })
   );
