@@ -4,7 +4,7 @@ import { useHistory, useParams } from "react-router-dom";
 import { useStoreon } from "storeon/react";
 import { Events, State } from "../../store";
 import { useFormik } from "formik";
-import { CreateRecordRequest, UpdateRecordRequest } from "../../Api";
+import { UpdateRecordRequest } from "../../Api";
 import {
   Box,
   Button,

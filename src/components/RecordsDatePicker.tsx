@@ -20,6 +20,8 @@ const RecordsDatePicker = () => {
 
   useEffect(() => {
     handleMonthChange().then();
+    // TODO: Пока так нужно, потом подумаю как переделать
+    // eslint-disable-next-line
   }, []);
 
   const handleDateChange = (date: MaterialUiPickersDate) => {
