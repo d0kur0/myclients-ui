@@ -6,4 +6,3 @@ import register from "./registerServiceWorker";
 
 ReactDOM.render(<App />, document.getElementById("root"));
 reportWebVitals();
-register();
