@@ -24,6 +24,8 @@ import RecordView from "./pages/records/RecordView";
 import RecordCreate from "./pages/records/RecordCreate";
 import RecordUpdate from "./pages/records/RecordUpdate";
 
+console.log(process.env.REACT_APP_API_GATEWAY);
+
 type RouteProps = {
   children: ReactChild;
   path: string;

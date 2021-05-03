@@ -25,4 +25,5 @@ jobs:
       - run: npm ci
       - run: npm run build
       # Deploy
+      - run: echo 'REACT_APP_API_GATEWAY="${{ secrets.REACT_APP_API_GATEWAY }}"'
       - run: cd build && rsync -e "ssh -i $HOME/.ssh/key -o StrictHostKeyChecking=no" --archive --compress --delete . ${{ secrets.SSH_USERNAME }}@${{ secrets.SSH_HOSTNAME }}:${{ secrets.TARGET_PATH }}
