@@ -26,6 +26,9 @@ const useBaseCrudStyles = makeStyles(theme => ({
     color: theme.palette.primary.main,
     position: "absolute",
   },
+  datePicker: {
+    marginRight: theme.spacing(2),
+  },
 }));
 
 export default useBaseCrudStyles;

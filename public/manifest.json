@@ -19,7 +19,7 @@
     }
   ],
   "start_url": "/index.html",
-  "display": "fullscreen",
+  "display": "minimal-ui",
   "theme_color": "#ff80ab",
   "background_color": "#ddd",
   "prefer_related_applications": false

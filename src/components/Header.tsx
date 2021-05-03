@@ -1,4 +1,4 @@
-import React, { ChangeEvent, useState } from "react";
+import React, { ChangeEvent, useEffect, useState } from "react";
 import { useStoreon } from "storeon/react";
 import { Events, State } from "../store";
 import { Link } from "react-router-dom";
@@ -23,6 +23,7 @@ import {
 } from "@material-ui/core";
 import useHeaderStyles from "../styles/Header";
 import { PageProps } from "../App";
+import { useLocation } from "react-use";
 
 const Header = ({ title, isNeedSearch }: PageProps) => {
   const classes = useHeaderStyles();
@@ -32,6 +33,9 @@ const Header = ({ title, isNeedSearch }: PageProps) => {
 
   const isMenuOpen = Boolean(anchorEl);
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
+
+  const location = useLocation();
+  useEffect(() => setMobileMoreAnchorEl(null), [location]);
 
   const handleProfileMenuOpen = (event: React.MouseEvent<HTMLElement>) =>
     setAnchorEl(event.currentTarget || null);

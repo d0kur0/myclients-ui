@@ -8,6 +8,10 @@ const useHeaderStyles = makeStyles(theme => ({
   appBar: {
     paddingLeft: 0,
     paddingRight: 0,
+    flexWrap: "wrap",
+    [theme.breakpoints.up("sm")]: {
+      flexWrap: "nowrap",
+    },
   },
   menuButton: {
     marginRight: theme.spacing(2),
@@ -28,9 +32,13 @@ const useHeaderStyles = makeStyles(theme => ({
     marginRight: theme.spacing(0),
     marginLeft: 0,
     width: "100%",
+    order: 1,
+    marginBottom: theme.spacing(3),
     [theme.breakpoints.up("sm")]: {
       marginLeft: theme.spacing(3),
       width: "auto",
+      order: "unset",
+      marginBottom: theme.spacing(0),
     },
   },
   searchIcon: {

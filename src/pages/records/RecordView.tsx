@@ -69,7 +69,9 @@ const RecordView = () => {
       </Dialog>
 
       <div className={classes.addButtonContainerSpaceBetWeen}>
-        <RecordsDatePicker />
+        <div className={classes.datePicker}>
+          <RecordsDatePicker />
+        </div>
 
         <Button component={Link} to="/records/create" variant="contained" color="primary">
           Создать

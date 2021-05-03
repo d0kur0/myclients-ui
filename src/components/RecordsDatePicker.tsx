@@ -48,7 +48,7 @@ const RecordsDatePicker = () => {
           const monthOfSelectedDate = selectedDate && getMonth(selectedDate);
           const numberOfDay = day && getDate(day);
 
-          const foundedDay = selectedDays.find(
+          const foundedDay = selectedDays?.find(
             i => monthOfDay === monthOfSelectedDate && i.day === numberOfDay
           );
 
