@@ -16,16 +16,13 @@ jobs:
       - uses: actions/setup-node@v1
         with:
           node-version: ${{ matrix.node-version }}
+      # Setup key
+      - run: set -eu
+      - run: mkdir "$HOME/.ssh"
+      - run: echo "${{ secrets.SSH_PRIVATE_KEY }}" > "$HOME/.ssh/key"
+      - run: chmod 600 "$HOME/.ssh/key"
       # Build
       - run: npm ci
       - run: npm run build
-
-      - uses: trendyminds/github-actions-rsync@master
-        with:
-          RSYNC_OPTIONS: -avzr --delete --exclude node_modules --exclude '.git*'
-          RSYNC_TARGET: ${{secrets.TARGET_PATH}}
-          RSYNC_SOURCE: build
-        env:
-          SSH_PRIVATE_KEY: ${{secrets.SSH_PRIVATE_KEY}}
-          SSH_USERNAME: ${{secrets.SSH_USERNAME}}
-          SSH_HOSTNAME: ${{secrets.SSH_HOSTNAME}}
+      # Deploy
+      - run: cd build && rsync -e "ssh -i $HOME/.ssh/key -o StrictHostKeyChecking=no" --archive --compress --delete . ${{ secrets.SSH_USERNAME }}@${{ secrets.SSH_HOSTNAME }}:${{ secrets.TARGET_PATH }}
