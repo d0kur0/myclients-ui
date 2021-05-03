@@ -25,4 +25,4 @@ jobs:
       - run: npm ci
       - run: npm run build
       # Deploy
-      - run: cd dist && rsync -e "ssh -i $HOME/.ssh/key -o StrictHostKeyChecking=no" --archive --compress --delete . d0kur0@dokuro-apps.ru:/var/www/myclients.dokuro-app.ru/html/
+      - run: cd build && rsync -e "ssh -i $HOME/.ssh/key -o StrictHostKeyChecking=no" --archive --compress --delete . d0kur0@dokuro-apps.ru:/var/www/myclients.dokuro-app.ru/html/
