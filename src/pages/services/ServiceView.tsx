@@ -83,7 +83,7 @@ const ServiceView = () => {
         </Button>
       </div>
       <Box borderRadius={5} className={classes.root}>
-        <List subheader={<ListSubheader>Список услуг</ListSubheader>}>
+        <List subheader={<ListSubheader>Список услуг ({services.length})</ListSubheader>}>
           {servicesForList.length === 0 && (
             <ListItem>
               <ListItemText primary="Записей нет" />

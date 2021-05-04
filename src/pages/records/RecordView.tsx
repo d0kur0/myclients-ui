@@ -79,7 +79,10 @@ const RecordView = () => {
       </div>
 
       <Box borderRadius={5} className={classes.root}>
-        <List subheader={<ListSubheader>Записи на выбранную дату</ListSubheader>}>
+        <List
+          subheader={
+            <ListSubheader>Записи на выбранную дату ({records.length})</ListSubheader>
+          }>
           {records.length === 0 && (
             <ListItem>
               <ListItemText primary="Записей нет" />
