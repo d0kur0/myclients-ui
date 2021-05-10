@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import {
-  Avatar,
   Box,
   Button,
   Dialog,
@@ -14,7 +13,6 @@ import {
   IconButton,
   List,
   ListItem,
-  ListItemAvatar,
   ListItemSecondaryAction,
   ListItemText,
   ListSubheader,
@@ -26,11 +24,7 @@ import { Link } from "react-router-dom";
 import useBaseCrudStyles from "../../styles/baseCrud";
 import { useStoreon } from "storeon/react";
 import { Events, State } from "../../store";
-import {
-  Delete as DeleteIcon,
-  Edit as EditIcon,
-  MonetizationOn as MonetizationOnIcon,
-} from "@material-ui/icons";
+import { Delete as DeleteIcon, Edit as EditIcon } from "@material-ui/icons";
 import RecordsDatePicker from "../../components/RecordsDatePicker";
 import { format } from "date-fns";
 import { useRecordViewStyles } from "../../styles/recordView";
