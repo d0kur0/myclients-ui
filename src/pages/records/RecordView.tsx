@@ -3,13 +3,14 @@ import {
   Avatar,
   Box,
   Button,
-  Container,
   Dialog,
   DialogActions,
   DialogContent,
+  Paper,
   DialogContentText,
   DialogTitle,
   Divider,
+  Container,
   IconButton,
   List,
   ListItem,
@@ -18,6 +19,8 @@ import {
   ListItemText,
   ListSubheader,
   Typography,
+  Card,
+  CardHeader,
 } from "@material-ui/core";
 import { Link } from "react-router-dom";
 import useBaseCrudStyles from "../../styles/baseCrud";
@@ -30,13 +33,17 @@ import {
 } from "@material-ui/icons";
 import RecordsDatePicker from "../../components/RecordsDatePicker";
 import { format } from "date-fns";
+import { useRecordViewStyles } from "../../styles/recordView";
+import { Skeleton } from "@material-ui/lab";
 
 const RecordView = () => {
   const classes = useBaseCrudStyles();
+  const recordViewClasses = useRecordViewStyles();
   const [recordForDelete, setRecordForDelete] = useState(0);
-  const { dispatch, recordsDate, records } = useStoreon<State, Events>(
+  const { dispatch, recordsDate, records, isPending } = useStoreon<State, Events>(
     "recordsDate",
-    "records"
+    "records",
+    "isPending"
   );
 
   useEffect(() => dispatch("records/fetch"), [recordsDate, dispatch]);
@@ -49,7 +56,7 @@ const RecordView = () => {
   const handleDeleteRecordDisagree = () => setRecordForDelete(0);
 
   return (
-    <Container maxWidth="sm">
+    <Container>
       <Dialog
         open={Boolean(recordForDelete)}
         onClose={handleDeleteRecordDisagree}
@@ -69,74 +76,99 @@ const RecordView = () => {
       </Dialog>
 
       <div className={classes.addButtonContainerSpaceBetWeen}>
-        <div className={classes.datePicker}>
-          <RecordsDatePicker />
-        </div>
-
         <Button component={Link} to="/records/create" variant="contained" color="primary">
           Создать
         </Button>
       </div>
 
-      <Box borderRadius={5} className={classes.root}>
-        <List
-          subheader={
-            <ListSubheader>Записи на выбранную дату ({records.length})</ListSubheader>
-          }>
-          {records.length === 0 && (
-            <ListItem>
-              <ListItemText primary="Записей нет" />
-            </ListItem>
-          )}
+      <div className={recordViewClasses.root}>
+        <div className={recordViewClasses.datePicker}>
+          <Paper elevation={3}>
+            <RecordsDatePicker />
+          </Paper>
+        </div>
 
-          {records.map((record, key) => (
-            <React.Fragment key={key}>
-              {key !== 0 && <Divider variant="inset" component="li" />}
-              <ListItem>
-                <ListItemAvatar>
-                  <Avatar>
-                    <MonetizationOnIcon />
-                  </Avatar>
-                </ListItemAvatar>
-
-                <ListItemText
-                  primary={`${record.client.firstName} ${
-                    record.client.middleName
-                  } (${format(new Date(record.date), "HH:mm")})`}
-                  secondary={
-                    <>
-                      {record.services.map((service, key) => (
-                        <Typography component="span" key={key}>
-                          {service.name}
-                        </Typography>
-                      ))}
-
-                      <Typography variant="body2">
-                        Сумма: {record.services.reduce((acc, s) => acc + s.price, 0)} руб.
-                      </Typography>
-                    </>
+        <div className={recordViewClasses.list}>
+          <Box borderRadius={5} className={classes.root}>
+            {isPending && (
+              <Card>
+                <CardHeader
+                  avatar={
+                    <Skeleton animation="wave" variant="circle" width={40} height={40} />
                   }
+                  title={
+                    <Skeleton
+                      animation="wave"
+                      height={10}
+                      width="80%"
+                      style={{ marginBottom: 6 }}
+                    />
+                  }
+                  subheader={<Skeleton animation="wave" height={10} width="40%" />}
                 />
-                <ListItemSecondaryAction>
-                  <IconButton
-                    component={Link}
-                    to={`/records/update/${record.id}`}
-                    edge="start"
-                    aria-label="delete">
-                    <EditIcon fontSize="small" />
-                  </IconButton>
-                  <IconButton
-                    onClick={() => handleDeleteRecord(record.id)}
-                    edge="end"
-                    aria-label="delete">
-                    <DeleteIcon fontSize="small" />
-                  </IconButton>
-                </ListItemSecondaryAction>
-              </ListItem>
-            </React.Fragment>
-          ))}
-        </List>
-      </Box>
+                <Skeleton animation="wave" variant="rect" height={190} />
+              </Card>
+            )}
+
+            {!isPending && (
+              <List
+                subheader={
+                  <ListSubheader>
+                    Записи на выбранную дату ({records.length})
+                  </ListSubheader>
+                }>
+                {records.length === 0 && (
+                  <ListItem>
+                    <ListItemText primary="Записей нет" />
+                  </ListItem>
+                )}
+
+                {records.map((record, key) => (
+                  <React.Fragment key={key}>
+                    {key !== 0 && <Divider variant="fullWidth" component="li" />}
+                    <ListItem>
+                      <ListItemText
+                        primary={`${record.client.firstName} ${
+                          record.client.middleName
+                        } (${format(new Date(record.date), "HH:mm")})`}
+                        secondary={
+                          <>
+                            {record.services.map((service, key) => (
+                              <Typography component="span" key={key}>
+                                {service.name}
+                              </Typography>
+                            ))}
+
+                            <Typography component="span" variant="body2">
+                              Сумма:{" "}
+                              {record.services.reduce((acc, s) => acc + s.price, 0)} руб.
+                            </Typography>
+                          </>
+                        }
+                      />
+                      <ListItemSecondaryAction>
+                        <IconButton
+                          component={Link}
+                          to={`/records/update/${record.id}`}
+                          edge="start"
+                          aria-label="delete">
+                          <EditIcon fontSize="small" />
+                        </IconButton>
+                        <IconButton
+                          onClick={() => handleDeleteRecord(record.id)}
+                          edge="end"
+                          aria-label="delete">
+                          <DeleteIcon fontSize="small" />
+                        </IconButton>
+                      </ListItemSecondaryAction>
+                    </ListItem>
+                  </React.Fragment>
+                ))}
+              </List>
+            )}
+          </Box>
+        </div>
+      </div>
     </Container>
   );
 };

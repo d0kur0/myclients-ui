@@ -75,6 +75,12 @@ const useHeaderStyles = makeStyles(theme => ({
       display: "none",
     },
   },
+  desktopIcon: {
+    marginRight: theme.spacing(0.5),
+  },
+  desktopIconLabel: {
+    textTransform: "unset",
+  },
 }));
 
 export default useHeaderStyles;

@@ -15,10 +15,10 @@ import {
 } from "@material-ui/core";
 import { Autocomplete } from "@material-ui/lab";
 import { KeyboardDateTimePicker, MuiPickersUtilsProvider } from "@material-ui/pickers";
-import DateFnsUtils from "@date-io/date-fns";
 import ruLocale from "date-fns/locale/ru";
 import { Service } from "../../store/services";
 import { Client } from "../../store/clients";
+import { RuFormat, RuLocalizedUtils } from "../../components/RecordsDatePicker";
 
 type ParamType = {
   recordID: string;
@@ -61,7 +61,7 @@ const RecordUpdate = () => {
           Обновление записи
         </Typography>
         <form onSubmit={formik.handleSubmit}>
-          <MuiPickersUtilsProvider utils={DateFnsUtils} locale={ruLocale}>
+          <MuiPickersUtilsProvider utils={RuLocalizedUtils} locale={ruLocale}>
             <KeyboardDateTimePicker
               fullWidth
               margin="normal"
@@ -69,7 +69,8 @@ const RecordUpdate = () => {
               label="Выберите время записи"
               initialFocusedDate={new Date()}
               value={formik.values.date}
-              variant="inline"
+              variant="dialog"
+              format={`${RuFormat} - HH:MM`}
               inputVariant="outlined"
               ampm={false}
               onError={(a, b) => {

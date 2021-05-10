@@ -13,7 +13,7 @@ const useBaseCrudStyles = makeStyles(theme => ({
   addButtonContainerSpaceBetWeen: {
     marginBottom: theme.spacing(2),
     display: "flex",
-    justifyContent: "space-between",
+    justifyContent: "flex-end",
   },
   submitButtonWrapper: {
     margin: theme.spacing(3, 0, 2),
@@ -25,9 +25,6 @@ const useBaseCrudStyles = makeStyles(theme => ({
   submitButtonProgress: {
     color: theme.palette.primary.main,
     position: "absolute",
-  },
-  datePicker: {
-    marginRight: theme.spacing(2),
   },
 }));
 

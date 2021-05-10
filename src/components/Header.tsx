@@ -20,6 +20,7 @@ import {
   Typography,
   Toolbar,
   AppBar,
+  Button,
 } from "@material-ui/core";
 import useHeaderStyles from "../styles/Header";
 import { PageProps } from "../App";
@@ -119,7 +120,7 @@ const Header = ({ title, isNeedSearch }: PageProps) => {
   return (
     <div className={classes.grow}>
       <AppBar position="static">
-        <Container maxWidth="md">
+        <Container maxWidth="lg">
           <Toolbar className={classes.appBar}>
             <IconButton
               onClick={() => window.history.back()}
@@ -151,27 +152,33 @@ const Header = ({ title, isNeedSearch }: PageProps) => {
               </div>
             )}
             <div className={classes.sectionDesktop}>
-              <IconButton
+              <Button
+                className={classes.desktopIconLabel}
                 component={Link}
                 to="/"
                 aria-label="open records"
                 color="inherit">
-                <EventNoteIcon />
-              </IconButton>
-              <IconButton
+                <EventNoteIcon className={classes.desktopIcon} />
+                Записи
+              </Button>
+              <Button
+                className={classes.desktopIconLabel}
                 component={Link}
                 to="/clients"
                 aria-label="open clients"
                 color="inherit">
-                <GroupIcon />
-              </IconButton>
-              <IconButton
+                <GroupIcon className={classes.desktopIcon} />
+                Клиенты
+              </Button>
+              <Button
+                className={classes.desktopIconLabel}
                 component={Link}
                 to="/services"
                 aria-label="open services"
                 color="inherit">
-                <AssignmentIcon />
-              </IconButton>
+                <AssignmentIcon className={classes.desktopIcon} />
+                Услуги
+              </Button>
               <IconButton
                 edge="end"
                 aria-label="account of current user"

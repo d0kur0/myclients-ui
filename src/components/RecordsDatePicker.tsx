@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Badge } from "@material-ui/core";
+import { Badge, useMediaQuery, useTheme } from "@material-ui/core";
 import { KeyboardDatePicker, MuiPickersUtilsProvider } from "@material-ui/pickers";
 import { getRecordsCountOFMonthRequest, GetRecordsCountOfMonthResponse } from "../Api";
 import DateFnsUtils from "@date-io/date-fns";
@@ -7,45 +7,59 @@ import ruLocale from "date-fns/locale/ru";
 import { useStoreon } from "storeon/react";
 import { Events, State } from "../store";
 import { MaterialUiPickersDate } from "@material-ui/pickers/typings/date";
-import { getDate, getMonth } from "date-fns";
+import { format, getDate, getMonth } from "date-fns";
+
+export class RuLocalizedUtils extends DateFnsUtils {
+  getCalendarHeaderText(date: number | Date) {
+    return format(date, "LLLL", { locale: this.locale });
+  }
+
+  getDatePickerHeaderText(date: number | Date) {
+    return format(date, "dd MMMM", { locale: this.locale });
+  }
+}
+
+export const RuFormat = "d MMM yyyy";
 
 const RecordsDatePicker = () => {
   const [selectedDays, setSelectedDays] = useState<GetRecordsCountOfMonthResponse>([]);
-  const [selectedDate, setSelectedDate] = useState(new Date());
+  const [viewedDate, setViewedDate] = useState<MaterialUiPickersDate>(new Date());
   const { dispatch, recordsDate } = useStoreon<State, Events>("recordsDate");
 
-  const handleMonthChange = async () => {
-    getRecordsCountOFMonthRequest(selectedDate).then(days => setSelectedDays(days));
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down("xs"));
+
+  const handleMonthChange = async (date: MaterialUiPickersDate) => {
+    setViewedDate(date);
+    date && getRecordsCountOFMonthRequest(date).then(days => setSelectedDays(days));
   };
 
   useEffect(() => {
-    handleMonthChange().then();
+    handleMonthChange(new Date()).then();
     // TODO: Пока так нужно, потом подумаю как переделать
     // eslint-disable-next-line
   }, []);
 
   const handleDateChange = (date: MaterialUiPickersDate) => {
-    console.log("handleDateChange");
-
-    if (date) {
-      dispatch("records/setRecordsDate", date);
-      setSelectedDate(date);
-    }
+    date && dispatch("records/setRecordsDate", date);
   };
 
   return (
-    <MuiPickersUtilsProvider utils={DateFnsUtils} locale={ruLocale}>
+    <MuiPickersUtilsProvider utils={RuLocalizedUtils} locale={ruLocale}>
       <KeyboardDatePicker
+        format={RuFormat}
         onChange={handleDateChange}
         value={recordsDate}
-        variant="inline"
+        orientation={isMobile ? "portrait" : "landscape"}
+        variant={isMobile ? "dialog" : "static"}
+        openTo="date"
         inputVariant="outlined"
-        size="small"
+        fullWidth
         autoOk={true}
         onMonthChange={handleMonthChange}
         renderDay={(day, selectedDate, isInCurrentMonth, dayComponent) => {
           const monthOfDay = day && getMonth(day);
-          const monthOfSelectedDate = selectedDate && getMonth(selectedDate);
+          const monthOfSelectedDate = viewedDate && getMonth(viewedDate);
           const numberOfDay = day && getDate(day);
 
           const foundedDay = selectedDays?.find(

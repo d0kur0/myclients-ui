@@ -15,27 +15,25 @@ import {
 } from "@material-ui/core";
 import { Autocomplete } from "@material-ui/lab";
 import { KeyboardDateTimePicker, MuiPickersUtilsProvider } from "@material-ui/pickers";
-import DateFnsUtils from "@date-io/date-fns";
 import ruLocale from "date-fns/locale/ru";
 import { Service } from "../../store/services";
 import { Client } from "../../store/clients";
+import { RuFormat, RuLocalizedUtils } from "../../components/RecordsDatePicker";
 
 const RecordCreate = () => {
   const classes = useBaseCrudStyles();
   const history = useHistory();
 
-  const { dispatch, isPending, isSuccess, services, clients } = useStoreon<State, Events>(
-    "isPending",
-    "isSuccess",
-    "services",
-    "clients"
-  );
+  const { dispatch, isPending, isSuccess, services, clients, recordsDate } = useStoreon<
+    State,
+    Events
+  >("isPending", "isSuccess", "services", "clients", "recordsDate");
 
   const formik = useFormik<CreateRecordRequest>({
     initialValues: {
       clientId: 0,
       serviceIds: [],
-      date: new Date().toDateString(),
+      date: recordsDate.toDateString(),
     },
     onSubmit: values => dispatch("records/createRemote", values),
   });
@@ -51,7 +49,7 @@ const RecordCreate = () => {
           Добавление записи
         </Typography>
         <form onSubmit={formik.handleSubmit}>
-          <MuiPickersUtilsProvider utils={DateFnsUtils} locale={ruLocale}>
+          <MuiPickersUtilsProvider utils={RuLocalizedUtils} locale={ruLocale}>
             <KeyboardDateTimePicker
               fullWidth
               margin="normal"
@@ -59,7 +57,8 @@ const RecordCreate = () => {
               label="Выберите время записи"
               minDate={new Date()}
               value={formik.values.date}
-              variant="inline"
+              variant="dialog"
+              format={`${RuFormat} - HH:MM`}
               inputVariant="outlined"
               ampm={false}
             />

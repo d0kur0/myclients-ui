@@ -68,7 +68,6 @@ const ClientUpdate = () => {
             onChange={formik.handleChange}
             variant="outlined"
             margin="normal"
-            required
             fullWidth
             id="middleName"
             label="Фамилия клиента"
@@ -80,7 +79,6 @@ const ClientUpdate = () => {
             onChange={formik.handleChange}
             variant="outlined"
             margin="normal"
-            required
             fullWidth
             id="description"
             label="Описание клиента"
